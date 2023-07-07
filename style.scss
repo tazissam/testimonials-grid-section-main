@@ -1,0 +1,218 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap");
+
+
+@function hslac($color, $alpha:1) {
+    @if(type-of($color) == "color") {
+        @return hsla(hue($color), saturation($color), lightness($color), $alpha);
+    }
+    @else {
+        @error "You didn't pass a color object";
+    }
+}
+/* root varibale */
+    $clr-primary-400: hsl(263 55% 52%);
+    $clr-secoundary-400: hsl(217 19% 35%);
+    $clr-secoundary-500: hsl(219 29% 14%);
+    
+    $clr-neutral-100: hsl(0 0% 100%);
+    $clr-neutral-200: hsl(210 64% 95%);
+    $clr-neutral-300: hsl(0 0% 81%);
+    
+    $ff-primary: "Open Sans" , sans-serif;
+    
+    $fw-400: 500;
+    $fw-500: 600;
+    $fw-700: 800;
+    
+    $fs-300: 0.6875rem;
+    $fs-400: 0.8125rem;
+    $fs-500: 1.25rem;
+
+
+/* Box sizing rules */
+* , :is(::before,::after){
+    box-sizing: border-box;
+}
+
+body,
+p,figure,
+blockquote,
+dl,dd,
+h1 , h2 , h3 , h4 , h5 , h6 {
+    // color: hsl(217 19% 35%);
+    margin: 0;
+}
+
+:is(ul,ol) :is([role = "list"]) {
+    list-style: none;
+}
+
+html:focus-within {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-width: 100vh;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+}
+a:not([class]) {
+    text-decoration-skip-ink: auto;
+}
+
+img,
+picture {
+    max-width: 100%;
+    display: block;
+}
+
+input,button,
+textarea,select {
+    font: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html:focus-within {
+      scroll-behavior: auto;
+    }
+  
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+}
+
+
+body {
+    display: grid;
+    place-content: center;
+    min-height: 100vh;
+
+    font-family: var(--ff-primary,$ff-primary);
+    font-weight: var(--fw-400,$fs-400) ;
+
+    background-color: var(--clr-neutral-200,$clr-neutral-200);
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-weight: $fw-700;
+}
+
+.flow > * + * {
+    margin: 1em;
+}
+
+.flex {
+    display: flex;
+    gap: 1em;
+}
+
+
+
+.bg-primary-400 {
+    background: $clr-primary-400;
+}
+.bg-secondary-400 {
+    background: $clr-secoundary-400;
+}
+.bg-neutral-100 {
+    background: $clr-neutral-100;
+}
+.bg-secondary-500 {
+    background: $clr-secoundary-500;
+}
+
+.text-neutral-100 {
+    color: $clr-neutral-100;
+}
+.text-secondary-400 {
+    color: $clr-secoundary-400;
+}
+$grid-list: one ,
+            two,
+            three,
+            four,
+            five;
+@mixin auto-grid-template($grid:$grid-list){
+    @for $i from 1 through length($grid) {
+        .testimonial:nth-child(#{$i}) { 
+            grid-area: nth($list: $grid, $n: $i);
+        };
+    } 
+}
+.testimonial-grid {
+    padding-block: 2rem;
+    width: min(95%,70rem);
+    margin-inline: auto;
+
+
+    display: grid;
+    gap: 2rem;
+    grid-auto-columns: 1fr;
+    grid-template-areas: 
+        'one'
+        'two'
+        'three'
+        'four'
+        'five'
+
+}
+
+@include auto-grid-template;
+
+.testimonial{ 
+    font-size: $fs-400;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 2.5rem 3.75rem 3rem -3rem hslac($clr-secoundary-400,0.25)  ;
+    
+    &.quote {
+        background-image: url("./learn-grid-the-easy-way-main/images/bg-pattern-quotation.svg");
+        background-repeat: no-repeat;
+        background-position: top right 10%;
+    }
+    img {
+        width: 1.75rem;
+        aspect-ratio: 1;
+        border-radius: 50%;
+    }
+    .name {
+        font-size: $fs-400;
+        font-weight: $fw-400;
+        line-height: 1;
+    }
+    .position {
+        font-size: $fs-300;
+        opacity: 0.5;
+    }
+    > p:first-of-type {
+        font-size: $fs-500;
+        font-weight: 600;
+        line-height: 1.2; 
+    }
+    > p:last-of-type {
+        opacity: 0.7;
+    }
+}
+
+@media (min-width: 30em) {
+    .testimonial-grid {
+        grid-template-areas: 
+            'one one'
+            'two five'
+            'three five'
+            'four four';
+    }
+}
+
+@media (min-width: 50em) {
+    .testimonial-grid {
+        grid-template-areas: 
+            'one one two five'
+            'three four four five'
+    }
+}
